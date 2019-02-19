@@ -12,53 +12,51 @@ import br.com.caelum.financas.modelo.Movimentacao;
 import br.com.caelum.financas.modelo.TipoMovimentacao;
 import br.com.caelum.financas.util.JPAUtil;
 
+
 public class TesteMovimentacoesComCategoria {
 
 	public static void main(String[] args) {
 
-		
 		Categoria categoria1 = new Categoria("Viagem");
 		Categoria categoria2 = new Categoria("Negocios");
+
+		Conta conta1 = new Conta();
+		conta1.setId(1);
 		
-		Conta conta = new Conta();
-		conta.setId(4);		
-		
+		Conta conta2 = new Conta();
+		conta2.setId(2);
+
 		Movimentacao movimentacao1 = new Movimentacao();
-		movimentacao1.setData(Calendar.getInstance()); //hoje
+		movimentacao1.setData(Calendar.getInstance()); // hoje
 		movimentacao1.setDescricao("Viagem a SP");
 		movimentacao1.setTipo(TipoMovimentacao.SAIDA);
 		movimentacao1.setValor(new BigDecimal("100.0"));
-		movimentacao1.setCategoria(Arrays.asList(categoria1, categoria2));
+		movimentacao1.setCategoria(Arrays.asList(categoria1, categoria2));		
+		movimentacao1.setConta(conta1);
+
 		
-		movimentacao1.setConta(conta);		
-		
+	
 		Movimentacao movimentacao2 = new Movimentacao();
-		movimentacao2.setData(Calendar.getInstance()); //hoje
+		movimentacao2.setData(Calendar.getInstance()); // hoje
 		movimentacao2.setDescricao("Viagem ao RJ");
 		movimentacao2.setTipo(TipoMovimentacao.SAIDA);
 		movimentacao2.setValor(new BigDecimal("300.0"));
-		movimentacao2.setCategoria(Arrays.asList(categoria1, categoria2));
-		
-		
-		movimentacao2.setConta(conta);		
+		movimentacao2.setCategoria(Arrays.asList(categoria1, categoria2));		
+		movimentacao2.setConta(conta2);
 		
 		EntityManager em = new JPAUtil().getEntityManager();
 		em.getTransaction().begin();
 		
-		//em.persist(categoria1);
-		//em.persist(categoria2);
+		em.persist(categoria1);
+		em.persist(categoria2);
 		
-		//em.persist(movimentacao1);
-		//em.persist(movimentacao2);
 		
-		Conta conta2 = new Conta();
-		conta2.setId(11);	
-		
-		Movimentacao movimentacao = em.find(Movimentacao.class, 8);
-		movimentacao.setConta(conta2);
+		em.persist(movimentacao1);
+		em.persist(movimentacao2);
 		
 		em.getTransaction().commit();
 		em.close();
+		
 
 	}
 
